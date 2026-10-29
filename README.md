@@ -18,14 +18,13 @@ AGENTS.md                      에이전트 작업 규칙 (단계·원칙·보�
   fde-submit/                  S7 제출 정리, 예상 질문
 INSTALL.md                     작업 폴더에 설치하는 방법
 BOOTSTRAP.md                   스킬을 못 쓸 때의 대체 경로 (C안·B안 + 단계별 한 줄 지시)
-scripts/install.sh             작업 폴더에 스킬·규칙 파일 설치 (--target codex|claude)
 ```
 
 ## 사용
 ```bash
-git clone --depth 1 --branch v1 https://github.com/cvivis/fde-kit /tmp/fde-kit
+git clone -b v1 https://github.com/cvivis/fde-kit
 ```
-상세 절차는 `INSTALL.md`. 설치 후 에이전트에서 `$fde-start`로 시작합니다.
+설치는 `cp` 두 번이면 끝납니다. 상세 절차와 실패 시 분기는 `INSTALL.md`.
 
 ## 대상 에이전트
 기본은 **Codex**(`AGENTS.md` + `.agents/skills/`)입니다.

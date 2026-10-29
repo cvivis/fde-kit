@@ -4,7 +4,7 @@
 set -e
 
 # 키트 폴더에서 실수로 실행하는 것을 막는다(여기서 돌리면 작업 폴더가 아니라 키트가 오염된다).
-if [ -f ./scripts/install.sh ] && [ -f ./INSTALL.md ]; then
+if [ -f ./INSTALL.md ] && [ -f ./BOOTSTRAP.md ] && [ -f ./LICENSE ]; then
   echo "여기는 키트 폴더입니다. 과제 작업 폴더로 이동해서 실행하세요." >&2
   exit 1
 fi
