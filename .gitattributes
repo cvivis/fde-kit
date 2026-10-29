@@ -1,0 +1,6 @@
+# 샌드박스(Linux)에서 bash 스크립트가 CR 때문에 깨지지 않게 LF를 강제한다.
+* text=auto eol=lf
+*.sh  text eol=lf
+*.py  text eol=lf
+*.mjs text eol=lf
+*.md  text eol=lf
