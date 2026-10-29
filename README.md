@@ -17,7 +17,8 @@ AGENTS.md                      에이전트 작업 규칙 (단계·원칙·보�
   fde-handoff/                 세션 교체
   fde-submit/                  S7 제출 정리, 예상 질문
 INSTALL.md                     작업 폴더에 설치하는 방법
-BOOTSTRAP.md                   스킬을 쓸 수 없을 때의 대체 프롬프트 (단계별 한 줄 지시 포함)
+BOOTSTRAP.md                   스킬을 못 쓸 때의 대체 경로 (C안·B안 + 단계별 한 줄 지시)
+scripts/install.sh             작업 폴더에 스킬·규칙 파일 설치 (--target codex|claude)
 ```
 
 ## 사용
