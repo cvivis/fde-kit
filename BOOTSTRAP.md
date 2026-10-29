@@ -7,16 +7,23 @@
 | **C안** | clone은 됐는데 **스킬만 인식 안 됨** (파일은 있다) | 아래 C안 1줄. 규칙·절차 파일이 이미 있으므로 **아무것도 외울 필요 없다** |
 | **B안** | **clone 자체가 안 됨** (네트워크·운영 측 불허) | 아래 B안 프롬프트를 외워서 입력 |
 
-확인: `cat .agents/skills/fde-start/SKILL.md`가 되면 C안, 안 되면 B안.
+확인: `.agents/skills/fde-start/SKILL.md` 또는 clone한
+`fde-kit/.agents/skills/fde-start/SKILL.md`를 읽을 수 있으면 C안이다.
+clone한 파일만 있다면 먼저 `fde-kit/INSTALL.md`를 읽고 작업 폴더에 적용한다.
+한 경로에서 파일을 못 읽었다는 이유만으로 clone 실패로 판단하지 않는다.
 
 ## C안 — 파일을 직접 읽힌다
 
 ```
-.agents/skills/ 아래 SKILL.md 목록을 보여줘. 앞으로 내가 "S1 해"라고 하면
-해당 단계 SKILL.md 하나만 읽고 그 절차를 그대로 수행해. 다른 단계 파일은 읽지 마.
+AGENTS.md를 읽고 .agents/skills/ 아래 SKILL.md 목록을 보여줘.
+앞으로 내가 "S0 해" 또는 "S1 해"라고 하면 해당 단계 SKILL.md 하나를 읽고,
+그 지침이 요구하는 참고 파일·스크립트만 사용해. 다른 단계 SKILL.md는 읽지 마.
+지금은 목록만 보여줘.
 ```
 
-마지막 문장이 스킬 메커니즘의 **"해당 단계 것만 읽기"** 토큰 절약을 복원한다.
+해당 단계와 필요한 참고 파일만 읽어 토큰을 절약한다.
+설치 충돌로 복사본을 못 쓰면 규칙은 `fde-kit/AGENTS.md`, 스킬은
+`fde-kit/.agents/skills/`에서 읽고, 스크립트는 과제 작업 폴더에서 원본 경로로 실행한다.
 이후 `$fde-start` 대신 **"S0 해" … "S7 해"**로 호출한다.
 `docs/DECISIONS.md`에 한 줄: "스킬 디스커버리 미지원 → 파일 직접 참조로 전환."
 

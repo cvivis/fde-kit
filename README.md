@@ -21,10 +21,23 @@ BOOTSTRAP.md                   스킬을 못 쓸 때의 대체 경로 (C안·B�
 ```
 
 ## 사용
+
+과제 지문과 자료가 있는 작업 폴더에서 실행하세요.
+
 ```bash
 git clone -b v1 https://github.com/cvivis/fde-kit
+codex
 ```
-설치는 `cp` 두 번이면 끝납니다. 상세 절차와 실패 시 분기는 `INSTALL.md`.
+
+Codex에 입력하세요. 이미 clone했다면 이 지시부터 시작하면 됩니다.
+
+```text
+fde-kit/INSTALL.md를 읽고 현재 과제 폴더에 키트를 적용해 줘.
+기존 과제 파일과 규칙은 보존하고, 설치 확인까지만 해.
+```
+
+Codex가 스킬과 작업 규칙을 작업 폴더에 배치합니다. 별도 설치 프로그램은 필요 없습니다.
+설치 후 `$fde-start` 인식을 확인하고 S0을 시작하세요. 상세 절차와 실패 시 분기는 [INSTALL.md](INSTALL.md).
 
 ## 대상 에이전트
 기본은 **Codex**(`AGENTS.md` + `.agents/skills/`)입니다.
