@@ -17,9 +17,29 @@ $fde-start     # S0 시작
 ```
 Codex가 S0을 도는 동안 사람은 과제 지문을 정독한다(루트에 없을 수 있다 — `find . -iname 'README*'`).
 
-`install.sh`가 하는 일: 스킬을 `.agents/skills/`와 `.codex/skills/` **두 곳**에 깔고,
-`AGENTS.md`를 두고(기존 파일이 있으면 덧붙임), **인식되어야 하는 스킬 이름 8개를 출력**한다.
+### 이 명령은 어디서 실행하나
+
+**작업 환경(웹 IDE)의 터미널**이다. 내 PC가 아니다. 개인 파일 업로드가 막혀 있어 **clone이 유일한
+반입 경로**이고, `install.sh`는 clone된 파일을 작업 폴더의 올바른 위치로 옮긴다.
+
+`install.sh`가 하는 일 세 가지:
+
+1. 스킬을 `.agents/skills/`와 `.codex/skills/` **두 곳**에 깐다 (경로 가정이 틀릴 때의 보험)
+2. `AGENTS.md`를 둔다 — 작업 폴더에 이미 있으면 덮지 않고 **덧붙인다**
+3. **인식되어야 하는 스킬 이름 8개를 출력한다** ← `$` 목록과 눈으로 대조할 기준
+
 `.git`은 복사하지 않는다. Claude Code용은 `--target claude`(`CLAUDE.md` + `.claude/skills/`).
+
+### 스크립트가 안 돌면 — 수동 2줄 (결과는 거의 같다)
+
+```bash
+cp -r /tmp/fde-kit/.agents .
+[ -f AGENTS.md ] && cat /tmp/fde-kit/AGENTS.md >> AGENTS.md || cp /tmp/fde-kit/AGENTS.md .
+ls .agents/skills                   # fde-* 8개가 보이면 성공
+```
+
+잃는 것은 둘째 후보 경로(`.codex/skills/`)와 스킬 이름 출력뿐이다. **스크립트를 디버깅하지 말고
+바로 이걸 쓴다** — 1분 이상 쓸 가치가 없다.
 
 ## 확인 (clone 직후 10초)
 clone 직후 **"You are in 'detached HEAD' state"** 안내가 10줄쯤 나오는 것은 **정상**이다
