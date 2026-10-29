@@ -2,12 +2,3 @@
 .DS_Store
 Thumbs.db
 desktop.ini
-.env
-.env.*
-node_modules/
-__pycache__/
-.venv/
-*.webm
-build/
-target/
-.gradle/

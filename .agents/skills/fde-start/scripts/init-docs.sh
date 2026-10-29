@@ -2,6 +2,12 @@
 # 작업 폴더 루트에서 실행: docs/ 양식 복사, .gitignore 준비, git 초기화. 기존 파일은 덮어쓰지 않는다.
 # 사용: bash .agents/skills/fde-start/scripts/init-docs.sh
 set -e
+
+# 키트 폴더에서 실수로 실행하는 것을 막는다(여기서 돌리면 작업 폴더가 아니라 키트가 오염된다).
+if [ -f ./scripts/install.sh ] && [ -f ./INSTALL.md ]; then
+  echo "여기는 키트 폴더입니다. 과제 작업 폴더로 이동해서 실행하세요." >&2
+  exit 1
+fi
 TPL="$(cd "$(dirname "$0")/../assets/templates" && pwd)"
 mkdir -p docs
 for f in STATE INTERVIEW AGREEMENT DECISIONS VERIFY HANDOFF DEFENSE; do
