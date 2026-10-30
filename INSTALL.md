@@ -91,7 +91,7 @@ S0 이후 `docs/DECISIONS.md`에 실제 선택한 대체 경로와 이유를 기
 
 ## Claude Code
 
-현장 도구가 Claude Code면 위 절차를 다음만 바꿔 수행한다. 사용자는 `claude`를 실행하고 같은 지시를 입력한다.
+현장 규정이 Codex만 허용하면(2026 COFATHON) 이 절은 쓰지 않는다 — 로컬 연습용이다. 현장 도구가 Claude Code면 위 절차를 다음만 바꿔 수행한다. 사용자는 `claude`를 실행하고 같은 지시를 입력한다.
 
 | 위 절차 | Claude Code에서 |
 |---|---|

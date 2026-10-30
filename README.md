@@ -40,7 +40,7 @@ Codex가 스킬과 작업 규칙을 작업 폴더에 배치합니다. 별도 설
 설치 후 `$fde-start` 인식을 확인하고 S0을 시작하세요. 상세 절차와 실패 시 분기는 [INSTALL.md](INSTALL.md).
 
 ## 대상 에이전트
-기본은 **Codex**(`AGENTS.md` + `.agents/skills/`)입니다.
+기본은 **Codex**(`AGENTS.md` + `.agents/skills/`)입니다. 2026 COFATHON 현장은 **제공된 Codex만 허용**합니다(Claude Code 등 다른 AI 연결 불가) — 아래 Claude Code 경로는 로컬 연습용입니다.
 Claude Code에서 쓸 때는 `AGENTS.md`를 `CLAUDE.md`로 복사하고, `.agents/skills/`는 **그대로 둔 채**
 스킬 인식용으로 `.claude/skills/`에도 복사하세요(스크립트 경로가 `.agents/skills/` 기준이라 옮기면 깨집니다).
 호출은 `$fde-start` 대신 `/fde-start`. 규칙 파일은 작업 폴더에 **하나만** 두세요. 절차는 [INSTALL.md](INSTALL.md) "Claude Code".
