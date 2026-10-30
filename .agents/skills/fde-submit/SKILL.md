@@ -1,10 +1,10 @@
 ---
 name: fde-submit
 description: |
-  FDE 과제 제출 정리(S7). 작업 결과를 입력으로 README·DECISIONS를 최종 정리하고, 필수 제출 파일·비밀값을 점검하고, 서술형 예상 질문 6개를 DEFENSE에 질문만 적는다(답은 사람이 직접). 검증 직후 약 148분에 사용.
+  FDE 과제 제출 정리(S7). 작업 결과를 입력으로 $fde-blindspot Cycle 2(완결성 점검)를 한 번 부른 뒤, README·DECISIONS를 최종 정리하고, 필수 제출 파일·비밀값을 점검하고, 서술형 예상 질문 6개를 DEFENSE에 질문만 적는다(답은 사람이 직접). 검증 직후 약 148분에 사용.
   Triggers (KO): S7 해, 제출 정리, 예상 질문, DEFENSE
   Triggers (EN): fde submit, S7, final wrap-up
-  Do NOT use when: 성공 기준 판정 → $fde-verify. 기능 수정 → $fde-build.
+  Do NOT use when: 성공 기준 판정 → $fde-verify. 기능 수정 → $fde-build. 사각지대 자체 점검 → $fde-blindspot.
 ---
 
 # S7 정리·제출 (148–170분, 170–180분 제출 절차)
@@ -18,6 +18,8 @@ description: |
 코드, `docs/*`, `git log`, 과제 README의 필수 제출물 목록(STATE 과제 요약).
 
 ## 절차
+0. `$fde-blindspot`을 호출해 Cycle 2(완결성 점검, VERIFY·실제 코드 근거)를 받는다. 채택된 것은 DECISIONS "알려진 한계"에,
+   필요하면 DEFENSE 질문 재료로. 왕복이 늦어지면 생략하고 "확인 못 함"으로 README "알려진 한계"에 적는다.
 1. 루트 `README.md`(과제 README를 덮어쓰지 않는다 — 과제가 요구한 파일명이 따로 있으면 그것을 우선) 또는 과제 지정 문서에:
    무엇을 해결하나(현업 언어 2줄) / 실행 방법(명령 그대로, 포트) / 화면 흐름 / 합의 범위와 제외한 것과 이유 / 검증 결과 요약 / 알려진 한계
 2. DECISIONS에 빠진 결정이 있으면 코드·커밋 로그를 보고 채운다. **의도** 칸은 코드에서 추론하지 않는다 — 빈 결정 번호를 모아 한 번에 묻는다.
@@ -46,6 +48,7 @@ description: |
 
 ## 인접 스킬
 - vs `$fde-verify`: verify는 판정, 이 스킬은 판정 결과를 제출물로 옮긴다.
+- vs `$fde-blindspot`: 정리를 시작하기 전에 Cycle 2로 한 번 더 부른다.
 
 ## 완료
 - 필수 제출 파일이 모두 실제 경로에 있고 최종 커밋이 됐다. 160분이 되면 여기까지로 끝내고 사람에게 넘긴다.

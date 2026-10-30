@@ -10,12 +10,12 @@ Claude Code에서는 이 파일이 `CLAUDE.md`이고, 스킬 호출은 `$fde-…
 |---|---|---|
 | S0 착수 | `$fde-start` | 0–8 |
 | S1 발굴 | `$fde-interview` | 8–33 |
-| S2 합의 | `$fde-agreement` | 33–40 |
+| S2 합의 | `$fde-agreement` (`$fde-blindspot` Cycle 1 포함) | 33–40 |
 | S3 설계 | `$fde-design` | 40–50 |
 | S4·S5 구현 | `$fde-build` | 50–130 |
 | 세션 교체 | `$fde-handoff` | ~100 |
 | S6 검증 | `$fde-verify` (두 번째 세션) | 130–148 |
-| S7 정리·제출 | `$fde-submit` | 148–170 (170–180 제출 절차) |
+| S7 정리·제출 | `$fde-submit` (`$fde-blindspot` Cycle 2 포함) | 148–170 (170–180 제출 절차) |
 | 서술형 | 없음 — 사람이 직접(AI 금지) | 제출 확정 후 30분 (6문항×5분) |
 
 ## 시작할 때마다
