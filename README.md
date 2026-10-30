@@ -25,7 +25,7 @@ BOOTSTRAP.md                   스킬을 못 쓸 때의 대체 경로 (C안·B�
 과제 지문과 자료가 있는 작업 폴더에서 실행하세요.
 
 ```bash
-git clone -b v1 https://github.com/cvivis/fde-kit
+git clone https://github.com/cvivis/fde-kit
 codex
 ```
 

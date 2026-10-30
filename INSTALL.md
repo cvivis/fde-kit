@@ -9,7 +9,7 @@
 
 ```bash
 cd ~/workspace
-git clone -b v1 https://github.com/cvivis/fde-kit
+git clone https://github.com/cvivis/fde-kit
 codex
 ```
 
@@ -105,7 +105,6 @@ S0 이후 `docs/DECISIONS.md`에 실제 선택한 대체 경로와 이유를 기
 ## 출처와 버전
 
 - 첫 작업 커밋 본문에 출처를 남긴다.
-  `키트 출처: https://github.com/cvivis/fde-kit @v1 (<확인한 SHA>) — 과정용 스킬·문서 양식만 사용`
-- `v1`은 배포 버전을 선택하는 태그다. 같은 내용을 보장하려면 배포 확정 후 태그를 이동하지 않는다.
-  실제로 사용한 버전의 근거는 clone한 커밋 SHA다.
-- 태그 clone의 `detached HEAD` 안내는 정상이다. 과제 작업은 바깥 작업 폴더에서 진행한다.
+  `키트 출처: https://github.com/cvivis/fde-kit @main (<확인한 SHA>) — 과정용 스킬·문서 양식만 사용`
+- 기본 브랜치(`main`)의 최신본을 받는다. 실제로 사용한 버전의 근거는 clone한 커밋 SHA다(1단계에서 확인).
+- 과제 작업은 바깥 작업 폴더에서 진행한다.
