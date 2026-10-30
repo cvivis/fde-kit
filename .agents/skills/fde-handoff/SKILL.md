@@ -12,7 +12,7 @@ description: 세션 교체 전 docs/HANDOFF.md를 작성하고 STATE를 갱신�
    - "다음 한 걸음": 새 세션이 첫 명령으로 바로 실행할 수 있게 구체적으로
 2. `docs/STATE.md` 현재 단계·작업 목록 갱신.
 3. 커밋: `[H] docs: handoff`
-4. 사람에게 알린다: "`/new`로 새 세션을 열고 아래 첫 프롬프트를 입력하세요."
+4. 사람에게 알린다: "새 세션을 열고(Codex `/new`, Claude Code `/clear`) 아래 첫 프롬프트를 입력하세요."
 
 ## 새 세션 첫 프롬프트
-"AGENTS.md, docs/HANDOFF.md, docs/STATE.md 순서로 읽고 3줄로 요약해. 다음 한 걸음을 시작하기 전에 내 확인을 기다려."
+"AGENTS.md(Claude Code는 CLAUDE.md), docs/HANDOFF.md, docs/STATE.md 순서로 읽고 3줄로 요약해. 다음 한 걸음을 시작하기 전에 내 확인을 기다려."

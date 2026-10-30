@@ -41,8 +41,9 @@ Codex가 스킬과 작업 규칙을 작업 폴더에 배치합니다. 별도 설
 
 ## 대상 에이전트
 기본은 **Codex**(`AGENTS.md` + `.agents/skills/`)입니다.
-Claude Code에서 쓸 때는 `AGENTS.md`를 `CLAUDE.md`로, `.agents/skills/`를 `.claude/skills/`로 복사하세요.
-내용은 같고 **파일명·디렉터리만 다릅니다.** 규칙 파일은 작업 폴더에 **하나만** 두세요.
+Claude Code에서 쓸 때는 `AGENTS.md`를 `CLAUDE.md`로 복사하고, `.agents/skills/`는 **그대로 둔 채**
+스킬 인식용으로 `.claude/skills/`에도 복사하세요(스크립트 경로가 `.agents/skills/` 기준이라 옮기면 깨집니다).
+호출은 `$fde-start` 대신 `/fde-start`. 규칙 파일은 작업 폴더에 **하나만** 두세요. 절차는 [INSTALL.md](INSTALL.md) "Claude Code".
 
 ## 설계 원칙
 - 문제 정의·범위·현업 합의는 사람이 한다. 에이전트는 합의 범위 안에서 설계 제안 → 구현 → 검증.

@@ -1,7 +1,7 @@
 # OpenAI 호출 패턴
 
 원칙: 키와 URL은 환경변수(`OPENAI_API_KEY`, `OPENAI_BASE_URL`)에서 SDK가 자동으로 읽게 둔다. 코드에 쓰지 않는다.
-모델 이름은 `python3 .agents/skills/fde-start/scripts/check-openai.py` 결과에서 고른다. API 사용법이 헷갈리면 Codex 내장 `$openai-docs` 스킬로 확인한다(외부 브라우저 사용 금지).
+모델 이름은 `python3 .agents/skills/fde-start/scripts/check-openai.py` 결과에서 고른다. API 사용법이 헷갈리면 Codex는 내장 `$openai-docs` 스킬로 확인하고, Claude Code는 이 파일의 패턴과 설치된 SDK 소스(`pip show -f openai`, `node_modules/openai`)만 본다(외부 브라우저·외부 AI 사용 금지).
 
 서버 바인딩: FastAPI `uvicorn app:app --host 0.0.0.0 --port 8000` / Express `app.listen(3000, '0.0.0.0')` / Vite `vite --host 0.0.0.0` / Spring Boot `server.address=0.0.0.0`
 
