@@ -15,6 +15,7 @@ description: |
 
 ## 입력
 `docs/AGREEMENT.md`, `docs/INTERVIEW.md`의 L1·L2·L3. 번역 규칙: `.agents/skills/fde-interview/references/expertise-extraction.md` §4.
+**AGREEMENT 성공 기준이 비어 있으면 시작하지 않는다** — 추측해서 채우지 말고 사용자에게 먼저 받는다.
 
 ## 절차
 ### 0단계: 번역표부터 (5분)
@@ -64,6 +65,7 @@ description: |
 - 의도 칸을 추측으로 채우지 않는다.
 
 ## 확인요청
+- AGREEMENT 성공 기준이 비었다 → 자동으로 채우지 않고 사용자에게 받는다.
 - 번역표에서 비어 있는 층 → 담당자 질문으로 돌려준다.
 - 결정마다 의도 한 줄을 묻는다.
 

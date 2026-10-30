@@ -15,6 +15,7 @@ description: |
 
 ## 입력
 `docs/STATE.md` 작업 목록의 다음 항목 하나, `docs/DECISIONS.md`. OpenAI·녹음은 `references/openai-patterns.md`.
+**작업 목록이 비어 있으면 구현하지 않는다** — S3(`$fde-design`)로 돌려보낸다.
 
 ## 절차
 1. **다음 항목 하나만** 구현한다. 다른 파일은 건드리지 않는다.
