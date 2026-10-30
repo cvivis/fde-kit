@@ -8,13 +8,13 @@
 ```
 AGENTS.md                      에이전트 작업 규칙 (단계·사람 몫·원칙·금지·확인요청·출력 형식)
 .agents/skills/
-  fde-start/                   S0 착수: docs 양식 생성, 환경·필수 제출물 확인
+  fde-start/                   S0 착수: docs 양식 생성, 환경·필수 제출물 확인 (+단계 진입 점검 check-stage.sh)
   fde-interview/               S1 발굴: 인터뷰 정리, 다음 질문 제안 (+질문 뱅크)
   fde-agreement/               S2 합의: 한 줄 명세, 범위, 성공 기준, 확인 메시지
   fde-blindspot/               사각지대 점검: S2·S7에서 호출, 놓친 시각·잘린 가능성 6개 중 사용자 채택만 반영
   fde-design/                  S3 설계: 고정 코드/LLM 분리, 결정 기록, 작업 목록
   fde-build/                   S4·S5 구현: 항목 하나씩 (+OpenAI·녹음 패턴)
-  fde-verify/                  S6 검증: 합의 대조, 점검, 바인딩 확인 스크립트
+  fde-verify/                  S6 검증: 형식→의미→목적 3단 판정, 바인딩 확인 스크립트
   fde-handoff/                 세션 교체
   fde-submit/                  S7 제출 정리, 예상 질문
 INSTALL.md                     작업 폴더에 설치하는 방법
