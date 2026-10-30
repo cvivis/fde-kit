@@ -2,6 +2,7 @@
 # 단계 진입 점검: 앞 단계 산출물의 빈 칸을 결정론으로 찾는다. 문서 규칙("비어 있으면 멈춘다")을 코드로 한 번 더 건다.
 # 사용(작업 폴더 루트): bash .agents/skills/fde-start/scripts/check-stage.sh S3|S4
 #   S3: 한 줄 명세, STATE 목표 한 줄, 성공 기준 1개 이상
+#       (경고만, 종료 코드에 영향 없음) INTERVIEW 요구 체크리스트 빈 칸 — S2가 [기본]을 가정으로 채웠어야 한다
 #   S4: S3 + 성공 기준마다 확인 방법, 작업 목록 항목마다 완료 조건, 모든 성공 기준 번호가 작업 목록에 연결
 # 종료 코드: 0 통과 / 1 빈 칸 있음(출력된 칸을 사람에게 보여 주고 멈춘다) / 2 사용법 오류
 set -u
@@ -48,6 +49,13 @@ rows="$(section "$A" "성공 기준" | awk -F'|' '
   }')"
 if [ -z "$rows" ]; then
   miss "AGREEMENT 성공 기준 — 1개 이상 필요"
+fi
+
+# (경고만) INTERVIEW 요구 체크리스트 빈 칸: "- P4 … [기본: …]: " 뒤가 비어 있는 줄. 시간 때문에 넘어올 수 있으므로 멈추지 않는다
+I=docs/INTERVIEW.md
+if [ "$STAGE" = S3 ] && [ -f "$I" ]; then
+  blank="$(section "$I" "요구 체크리스트" | grep -E "^- [A-Z][0-9]+ .*\]:[[:space:]]*$" | sed -E "s/^- ([A-Z][0-9]+) .*/\1/" | tr "\n" " ")"
+  [ -n "$blank" ] && echo "경고(멈추지 않음): 요구 체크리스트 빈 칸 — ${blank}→ [기본] 값을 가정으로 채워 AGREEMENT 가정에 적는다"
 fi
 
 if [ "$STAGE" = S4 ] && [ -n "$rows" ]; then
