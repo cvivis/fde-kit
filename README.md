@@ -6,7 +6,7 @@
 
 ## 구성
 ```
-AGENTS.md                      에이전트 작업 규칙 (단계·원칙·보고 형식)
+AGENTS.md                      에이전트 작업 규칙 (단계·사람 몫·원칙·금지·확인요청·출력 형식)
 .agents/skills/
   fde-start/                   S0 착수: docs 양식 생성, 환경·필수 제출물 확인
   fde-interview/               S1 발굴: 인터뷰 정리, 다음 질문 제안 (+질문 뱅크)
