@@ -1,10 +1,6 @@
 ---
 name: fde-submit
-description: |
-  FDE 과제 제출 정리(S7). 작업 결과를 입력으로 $fde-blindspot Cycle 2(완결성 점검)를 한 번 부른 뒤, README·DECISIONS를 최종 정리하고, 필수 제출 파일·비밀값을 점검하고, 서술형 예상 질문 6개를 DEFENSE에 질문만 적는다(답은 사람이 직접). 검증 직후 약 148분에 사용.
-  Triggers (KO): S7 해, 제출 정리, 예상 질문, DEFENSE
-  Triggers (EN): fde submit, S7, final wrap-up
-  Do NOT use when: 성공 기준 판정 → $fde-verify. 기능 수정 → $fde-build. 사각지대 자체 점검 → $fde-blindspot.
+description: FDE 제출 정리(S7, 약 148분). 사각지대 최종 점검 후 지정 제출 문서·결정·필수 파일을 정리하고 DEFENSE에 예상 질문만 쓴다. 제출은 사람이 확정한다.
 ---
 
 # S7 정리·제출 (148–170분, 170–180분 제출 절차)

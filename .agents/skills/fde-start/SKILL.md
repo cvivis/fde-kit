@@ -1,10 +1,6 @@
 ---
 name: fde-start
-description: |
-  FDE 과제 착수(S0). 과제 README를 입력으로 docs/ 양식 7종·.gitignore를 만들고, STATE에 과제 요약·기준판을 채우고, 런타임·OpenAI 환경변수 존재·필수 제출물을 확인한다. 코드는 쓰지 않는다.
-  Triggers (KO): S0 해, 과제 시작, 착수, 작업 문서 준비
-  Triggers (EN): fde start, kickoff, S0
-  Do NOT use when: 키트 설치 자체 → fde-kit/INSTALL.md. 담당자 대화 정리 → $fde-interview.
+description: FDE 과제 착수(S0). 지문·런타임·환경을 확인하고 docs 양식 7종과 STATE 기준판을 만든다. 키트 설치 자체는 INSTALL.md, 대화 정리는 fde-interview.
 ---
 
 # S0 착수 (0–8분)
@@ -24,8 +20,10 @@ description: |
    - 필수 요구 / 열린 결정(정해지지 않은 것) 구분
    - 실행 환경 제약(포트, 언어, OpenAI 사용 방식)
 3. 환경 확인 (값은 출력하지 않는다):
-   - `node --version; python3 --version; java -version 2>&1 | head -1`
-   - `python3 .agents/skills/fde-start/scripts/check-openai.py` (openai 패키지가 없으면 `pip install openai` 후)
+   - 지문·기존 프로젝트가 쓰는 런타임 버전만 확인한다. 스택이 없으면 사용 가능한 가벼운 런타임 하나를 확인한다.
+   - OpenAI 환경변수 존재를 먼저 확인한다. 키가 없으면 모델 목록은 "미확인 — 환경 없음"으로 남긴다.
+   - 키와 SDK가 이미 있으면 `check-openai.py` 또는 `check-openai.mjs` 중 환경에 맞는 하나만 실행한다.
+     목록 조회만을 위한 SDK 설치는 하지 않는다. SDK가 없거나 조회가 막히면 S4 실제 연결 항목으로 넘긴다.
 4. STATE 기준판의 "목표 한 줄"(현업 요청 요약)과 "제약"(포트·런타임·사용 가능 모델)을 채운다.
 4-1. `docs/INTERVIEW.md` "요구 체크리스트"에서 지문·환경으로 답이 있는 칸만 `값 — 지문`으로 채운다(주로 G1~G4, 지문에 있으면
    A5·B1·H1). 지문에 없는 칸은 비워 둔다 — 지어내지 않는다. 기획 칸(P)은 S1에서 담당자에게 묻는다.
@@ -57,4 +55,5 @@ description: |
 
 ## 완료
 - 필수 제출물 목록과 OpenAI 확인 결과가 STATE에 있다. 8분이 되면 남은 확인은 STATE "막힌 것"으로 넘기고 종료.
+- STATE 진행 측정에 시작·S0 종료 시각과 확인 가능한 토큰을 남긴다. 없어도 추측해 만들지 않는다.
 - 자가 검증: `ls docs`에 7종이 있고, STATE 기준판 "목표 한 줄"·"제약"이 비어 있지 않다. 요구 체크리스트에서 `— 지문`이 붙은 칸은 지문에 같은 내용이 있다.

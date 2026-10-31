@@ -1,10 +1,6 @@
 ---
 name: fde-blindspot
-description: |
-  사각지대 점검. AGREEMENT(와 S7 호출 시 VERIFY·실제 코드)를 입력으로 담당자가 말하지 않은 "놓친 사용자 시각" 3개 + "범위에서 잘려 나간 가능성" 3개를 제시하고, 사람이 채택/기각한 것만 반영한다. S2(요구 확정 직후)와 S7(제출 직전 완결성 점검) 두 지점에서 호출.
-  Triggers (KO): 사각지대 점검, blindspot, 놓친 거 없나, 빠진 거 봐줘
-  Triggers (EN): fde blindspot, blind spot check
-  Do NOT use when: 아직 AGREEMENT가 없음 → $fde-agreement가 먼저. 코드 구현 → $fde-build. 성공 기준 판정 → $fde-verify.
+description: FDE 사각지대 점검. S2 범위 합의와 S7 완결성 검토에서 놓친 시각·가능성 6개를 제안하고 사람이 채택한 것만 반영한다.
 ---
 
 # 사각지대 점검 (S2·S7, 매회 ~2–3분)

@@ -67,7 +67,7 @@ if [ "$STAGE" = S3 ] && [ -f "$I" ]; then
   [ -n "$blank" ] && echo "경고(멈추지 않음): 요구 체크리스트 빈 칸 — ${blank}→ [기본] 값을 가정으로 채워 AGREEMENT 가정에 적는다"
 fi
 
-if [ "$STAGE" = S4 ] && [ -n "$rows" ]; then
+if { [ "$STAGE" = S4 ] || [ "$STAGE" = S6 ]; } && [ -n "$rows" ]; then
   tasks="$(section "$S" "작업 목록" | grep -E '^- \[[ x]\] .*[^[:space:]]')"
   # 4) 성공 기준마다 확인 방법, 그리고 작업 목록에 번호가 연결됐는지(빠짐없이)
   while IFS="$(printf '\t')" read -r n m; do

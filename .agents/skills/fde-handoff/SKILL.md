@@ -1,10 +1,6 @@
 ---
 name: fde-handoff
-description: |
-  세션 교체. 현재 세션의 상태를 입력으로 docs/HANDOFF.md("다음 한 걸음" 포함)와 STATE를 갱신해 커밋하고, 새 세션 첫 프롬프트를 준다. 보조 세션이 메인에 돌려줄 5줄 반환 형식도 여기 있다. 약 100분 또는 결정을 다시 묻거나 같은 설명이 반복될 때 사용.
-  Triggers (KO): 세션 교체, 핸드오프, 새 세션 준비, 맥락 무거움, 보조 세션 반환 형식
-  Triggers (EN): fde handoff, session handoff, sub-session return
-  Do NOT use when: 제출 정리 → $fde-submit. 독립 검증 → $fde-verify.
+description: FDE 세션 교체. 결정 재질문·설명 반복 또는 교체 요청 때 STATE와 HANDOFF를 갱신하고 기존 승인 범위에서 이어 갈 지시를 준다.
 ---
 
 # 세션 교체
@@ -23,7 +19,7 @@ description: |
 3. 사람에게 알린다: "새 세션을 열고(Codex `/new`, Claude Code `/clear`) 아래 첫 프롬프트를 입력하세요."
 
 새 세션 첫 프롬프트:
-"AGENTS.md(Claude Code는 CLAUDE.md), docs/HANDOFF.md, docs/STATE.md 순서로 읽고 3줄로 요약해. 다음 한 걸음을 시작하기 전에 내 확인을 기다려."
+"AGENTS.md(Claude Code는 CLAUDE.md), docs/HANDOFF.md, docs/STATE.md 순서로 읽고 3줄로 요약해. 기존 실행 승인 범위의 다음 한 걸음을 이어 가. 미승인 작업이나 새 판단이 필요하면 묻고 멈춰."
 
 ## 출력
 ```text
@@ -53,4 +49,5 @@ description: |
 
 ## 완료
 - HANDOFF·STATE가 갱신되고 커밋됐다.
+- 100분 도달만으로 세션을 바꾸지 않는다. 결정 재질문·설명 반복 또는 사람이 교체를 요청할 때 사용한다.
 - 자가 검증: "다음 한 걸음"만 읽고 첫 명령을 실행할 수 있다(파일 경로·명령이 구체적이다).
