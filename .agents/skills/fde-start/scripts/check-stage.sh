@@ -5,7 +5,8 @@
 #       (경고만, 종료 코드에 영향 없음) INTERVIEW 요구 체크리스트 빈 칸 — S2가 [기본]을 가정으로 채웠어야 한다
 #       (경고만) 성공 기준이 5개를 넘으면 — KR-046, 늘릴 땐 다음 사이클·교체 중 하나를 사람에게 물었어야 한다
 #   S4: S3 + 성공 기준마다 확인 방법, 작업 목록 항목마다 완료 조건, 모든 성공 기준 번호가 작업 목록에 연결,
-#       DECISIONS 의도 칸이 빈 줄로 남은 결정 없음(KR-048 — "empty — 이유"는 통과, 완전히 빈 줄만 막는다)
+#       DECISIONS 의도 칸이 빈 줄로 남은 결정 없음(KR-048 — "empty — 이유"는 통과, 완전히 빈 줄만 막는다),
+#       LOGIC 결정 한 문장(또는 "결정 없음 — 이유"), 조건 1개 이상, "반드시" 조건마다 담당 단계(KR-060·061·068)
 #   S6: S4 + git log에 [S4] 커밋이 있어야 함(KR-049 — 구현 전에 검증을 시작하지 않는다)
 # 종료 코드: 0 통과 / 1 빈 칸 있음(출력된 칸을 사람에게 보여 주고 멈춘다) / 2 사용법 오류
 set -u
@@ -91,6 +92,38 @@ D=docs/DECISIONS.md
 if { [ "$STAGE" = S4 ] || [ "$STAGE" = S6 ]; } && [ -f "$D" ]; then
   blank_intent="$(grep -nE '^[[:space:]]*-[[:space:]]*\*\*의도\*\*:[[:space:]]*$' "$D" | cut -d: -f1 | tr '\n' ' ')"
   [ -n "$blank_intent" ] && miss "DECISIONS 의도 칸이 빈 줄(줄 번호: ${blank_intent}) — 추측해 채우지 말고 사람에게 받는다"
+fi
+
+# 6-B) LOGIC 배정표 — KR-060·061·068. 결정이 있으면 조건이 1개 이상이고, "반드시" 조건마다 담당 단계가 있어야 한다.
+#      표 열 순서: | ID | 종류 | 규칙(숫자) | 근거 | 담당 단계 | 방식 |. "- 결정: 결정 없음 — 이유"면 나머지를 보지 않는다.
+L=docs/LOGIC.md
+if [ "$STAGE" = S4 ] || [ "$STAGE" = S6 ]; then
+  if [ ! -f "$L" ]; then
+    miss "docs/LOGIC.md 없음 — 규칙이 걸린 결정이 없으면 '- 결정: 결정 없음 — 이유' 한 줄로 만든다"
+  else
+    decision="$(grep -m1 '^- 결정:' "$L" | sed 's/^- 결정://' | trim)"
+    if [ -z "$decision" ]; then
+      miss "LOGIC 결정 한 문장 — 없으면 '결정 없음 — 이유'"
+    elif ! printf '%s' "$decision" | grep -q '^결정 없음'; then
+      conds="$(section "$L" "조건" | awk -F'|' '
+        /^\|/ && $0 !~ /^\|[-[:space:]|]+$/ {
+          for (i = 2; i <= 7; i++) gsub(/^[[:space:]]+|[[:space:]]+$/, "", $i)
+          if ($2 == "ID" || $3 == "" || $4 == "") next
+          print $2 "\t" $3 "\t" $4 "\t" $6
+        }')"
+      if [ -z "$conds" ]; then
+        miss "LOGIC 조건 0개 — 검사할 조건이 없으면 검사기도 0건을 검사한다(검증 0건 = 실패)"
+      else
+        while IFS="$(printf '\t')" read -r cid kind rule owner; do
+          [ "$kind" = 반드시 ] || continue
+          [ -n "$owner" ] || miss "LOGIC 반드시 조건 $cid 담당 단계 — 어느 단계가 지키는지 정해야 로직이다"
+          printf '%s' "$rule" | grep -q '숫자 없음' && echo "경고(멈추지 않음): LOGIC 반드시 조건 $cid 규칙에 숫자 없음 — 담당자 답을 받거나 AGREEMENT 가정에 값을 적는다"
+        done <<EOF
+$conds
+EOF
+      fi
+    fi
+  fi
 fi
 
 # 7) S6: 구현 커밋([S4]) 없이 검증을 시작하려는가 — KR-049

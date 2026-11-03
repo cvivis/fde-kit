@@ -10,7 +10,7 @@ if [ -f ./INSTALL.md ] && [ -f ./BOOTSTRAP.md ] && [ -f ./LICENSE ]; then
 fi
 TPL="$(cd "$(dirname "$0")/../assets/templates" && pwd)"
 mkdir -p docs
-for f in STATE INTERVIEW AGREEMENT DECISIONS VERIFY HANDOFF DEFENSE; do
+for f in STATE INTERVIEW AGREEMENT DECISIONS LOGIC VERIFY HANDOFF DEFENSE; do
   [ -f "docs/$f.md" ] || cp "$TPL/$f.md" "docs/$f.md"
 done
 touch .gitignore

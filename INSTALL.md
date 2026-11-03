@@ -31,7 +31,7 @@ clone은 `작업폴더/fde-kit/`에 파일을 내려받는다. 작업 폴더에�
 | `fde-kit/.agents/skills/` | `.agents/skills/` | 스킬 9종과 그 안의 스크립트·참고 문서·문서 양식 전체 |
 
 `README.md`·`INSTALL.md`·`BOOTSTRAP.md`·`LICENSE`는 `fde-kit/`에 보관한다.
-과제의 README는 덮어쓰지 않는다. 문서 양식 7종을 `docs/`에 만드는 작업은 이후 S0에서 수행한다.
+과제의 README는 덮어쓰지 않는다. 문서 양식 8종을 `docs/`에 만드는 작업은 이후 S0에서 수행한다.
 
 ## Codex가 수행할 절차
 
