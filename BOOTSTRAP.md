@@ -40,6 +40,7 @@ AGENTS.md를 읽고 .agents/skills/ 아래 SKILL.md 목록을 보여줘.
  - 필요한 문서 절만 읽고 변경분만 갱신. 결정은 docs/DECISIONS.md에 선택/이유/의도/대안/약점.
    의도와 내가 바꾼 제안은 내 말 그대로 적고, 비어 있으면 지어내지 말고 물어봐.
  - 커밋은 "[단계] 내용"으로 자주. 실패는 STATE "실패 기록"에 적고, 같은 실패 2번이면 멈추고 가설만 보고.
+ - 막힐 때마다 STATE "어려움·접근 기록"에 시각·어려운 것·AI 접근·결과 한 줄. 과제 중 회고·중간 점검 문서는 이 기록으로 채우고 내 느낌은 지어내지 마.
 2) docs/에 STATE(맨 위: 목표 한 줄·제약·복귀 지점·다음 작업, 아래: 실패 기록), INTERVIEW, AGREEMENT, DECISIONS, LOGIC(결정·조건 표·단계 표·검사기), VERIFY, HANDOFF 빈 양식을 만들어.
 3) .gitignore(.env, node_modules), git init, 첫 커밋.
 4) 지문을 찾아(루트에 없을 수 있다: find . -iname "README*") 필수 제출 파일명을 뽑고,
