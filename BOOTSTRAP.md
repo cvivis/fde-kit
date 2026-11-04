@@ -43,7 +43,7 @@ AGENTS.md를 읽고 .agents/skills/ 아래 SKILL.md 목록을 보여줘.
  - 막힐 때마다 STATE "어려움·접근 기록"에 시각·어려운 것·AI 접근·결과 한 줄. 과제 중 회고·중간 점검 문서는 이 기록으로 채우고 내 느낌은 지어내지 마.
  - 과제 원본 파일(README·데이터 등 처음부터 있던 파일)은 고치지 마. 원본에 넣을 제출 내용은 submission/<같은 경로> 복사본에 쓰고, 원본으로 복사는 제출 직전 내가 한다.
 2) docs/에 STATE(맨 위: 목표 한 줄·제약·복귀 지점·다음 작업, 아래: 실패 기록), INTERVIEW, AGREEMENT, DECISIONS, LOGIC(결정·조건 표·단계 표·검사기), VERIFY, HANDOFF 빈 양식을 만들어.
-3) 처음부터 있던 과제 파일 목록·해시를 docs/TASK-ORIGINALS.sha256에 남기고(sha256sum), .gitignore(.env, node_modules), git init, 첫 커밋.
+3) 처음부터 있던 과제 파일 목록·해시를 docs/TASK-ORIGINALS.sha256에 남기고(sha256sum), git init, .gitignore(.env, node_modules — 과제가 준 .gitignore면 고치지 말고 .git/info/exclude에), 첫 커밋.
 4) 지문을 찾아(루트에 없을 수 있다: find . -iname "README*") 필수 제출 파일명을 뽑고,
    런타임 버전과 OPENAI 환경변수 "존재 여부"만 확인해(값 출력 금지).
 ```

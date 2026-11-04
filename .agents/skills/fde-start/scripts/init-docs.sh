@@ -11,21 +11,35 @@ fi
 TPL="$(cd "$(dirname "$0")/../assets/templates" && pwd)"
 mkdir -p docs
 # 과제 원본 보존(KR-122): 키트가 손대기 전 작업 폴더에 있던 파일을 기록한다. 이 파일들은 고치지 않는다(check-stage.sh가 확인).
-# 키트 설치가 다루는 AGENTS.md·CLAUDE.md(마커 블록)·.gitignore(줄 추가)와 키트·git 폴더는 뺀다. 이미 기록이 있으면 다시 만들지 않는다.
+# 키트·git 폴더와 키트가 만든 규칙 파일(키트 AGENTS.md와 같은 AGENTS.md·CLAUDE.md, fde-kit 표시가 있는 AGENTS.override.md·CLAUDE.local.md,
+# 첫 줄이 "# fde-kit"인 .gitignore)은 뺀다. 과제가 준 AGENTS.md·.gitignore는 원본이다(KR-127). 이미 기록이 있으면 다시 만들지 않는다.
 ORIG=docs/TASK-ORIGINALS.sha256
+KIT_RULES="$(cd "$(dirname "$0")/../../../.." && pwd)/fde-kit/AGENTS.md"
+kit_made() {
+  case "$1" in
+    ./AGENTS.md|./CLAUDE.md) [ -f "$KIT_RULES" ] && cmp -s "$1" "$KIT_RULES" ;;
+    ./AGENTS.override.md|./CLAUDE.local.md) grep -q "fde-kit:start" "$1" ;;
+    ./.gitignore) head -1 "$1" | grep -q "^# fde-kit" ;;
+    *) return 1 ;;
+  esac
+}
 if [ ! -f "$ORIG" ]; then
   if command -v sha256sum >/dev/null 2>&1; then H="sha256sum"; else H="shasum -a 256"; fi
   find . \( -path ./.git -o -path ./.agents -o -path ./.claude -o -path ./fde-kit -o -path ./node_modules -o -path ./submission \) -prune -o \
-    -type f ! -path ./AGENTS.md ! -path ./CLAUDE.md ! -path ./.gitignore ! -path "./$ORIG" ! -path "./$ORIG.tmp" -print | LC_ALL=C sort | while IFS= read -r f; do $H "$f"; done > "$ORIG.tmp"
+    -type f ! -path "./$ORIG" ! -path "./$ORIG.tmp" -print | LC_ALL=C sort | while IFS= read -r f; do kit_made "$f" || $H "$f"; done > "$ORIG.tmp"
   mv "$ORIG.tmp" "$ORIG"
   echo "과제 원본 $(wc -l < "$ORIG" | tr -d ' ')개 기록: $ORIG — 이 파일들은 고치지 않는다. 제출할 내용은 submission/<같은 경로> 복사본에 쓴다."
 fi
 for f in STATE INTERVIEW AGREEMENT DECISIONS LOGIC VERIFY HANDOFF DEFENSE; do
   [ -f "docs/$f.md" ] || cp "$TPL/$f.md" "docs/$f.md"
 done
-touch .gitignore
-for p in ".env" ".env.*" "node_modules/" "__pycache__/" ".venv/" "*.webm" "build/" "target/" ".gradle/"; do
-  grep -qxF "$p" .gitignore || echo "$p" >> .gitignore
-done
 [ -d .git ] || git init -q
+# 과제가 준 .gitignore는 고치지 않고 커밋되지 않는 .git/info/exclude에 넣는다(KR-127). 없거나 키트가 만든 것이면 .gitignore에 넣는다
+IGN=.gitignore
+if [ -f .gitignore ] && ! kit_made ./.gitignore; then IGN=.git/info/exclude; mkdir -p .git/info; touch "$IGN"
+elif [ ! -f .gitignore ]; then echo "# fde-kit: 키트가 만든 파일" > .gitignore; fi
+for p in "/fde-kit/" ".env" ".env.*" "node_modules/" "__pycache__/" ".venv/" "*.webm" "build/" "target/" ".gradle/"; do
+  grep -qxF "$p" "$IGN" || echo "$p" >> "$IGN"
+done
+[ "$IGN" = .gitignore ] || echo "과제 .gitignore는 그대로 두고 제외 규칙을 $IGN에 넣었다"
 echo "docs/ 준비 완료: $(ls docs | tr '\n' ' ')"

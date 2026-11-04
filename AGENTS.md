@@ -51,6 +51,7 @@ Claude Code에서는 이 파일이 `CLAUDE.md`이고, 스킬 호출은 `$fde-…
    덮어쓰기·덧붙이기·이름 바꾸기·삭제 모두 하지 않는다. 제출 내용을 원본 파일에 넣어야 하면 `submission/<같은 경로>`에 복사본을 만들어
    거기에 쓰고 STATE "제출 복사본"에 적는다. 원본으로 옮기는 것은 제출 직전 사람이 한다(`$fde-submit`이 복사 명령을 안내).
    새로 만드는 파일(코드·`docs/*`·과제가 이름만 정한 새 문서)은 원본이 아니다. `check-stage.sh`가 원본이 바뀌었으면 멈춘다.
+   과제가 준 `AGENTS.md`·`.gitignore`도 원본이다 — 키트 규칙은 `AGENTS.override.md`(과제 원문 + 키트 규칙), 제외 규칙은 `.git/info/exclude`에 둔다.
 
 ## 금지사항
 - `OPENAI_API_KEY`·`OPENAI_BASE_URL`은 환경변수로만 읽는다. 커밋·보고 직전에 `grep -rn "OPENAI_API_KEY=\|OPENAI_BASE_URL=\|sk-" <바꾼 파일>`로
