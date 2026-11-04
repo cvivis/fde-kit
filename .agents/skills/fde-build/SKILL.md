@@ -81,6 +81,8 @@ OpenAI·녹음이 필요할 때만 `references/openai-patterns.md` 해당 패턴
 - 승인 목록·AGREEMENT 밖 기능, 미승인 설계 변경, 완료 조건의 임의 완화.
 - 실행 확인·기록·커밋을 생략한 여러 항목 통째 구현.
 - `git reset --hard`, 키·URL 값의 코드·로그 기록.
+- 과제 원본 파일(README·데이터 등, `docs/TASK-ORIGINALS.sha256`) 수정. 실행 방법·제출 안내처럼 원본에 들어갈 내용은 STATE "제출 복사본"의
+  `submission/<같은 경로>`에 쓴다(없으면 `cp <원본> submission/<같은 경로>`로 만들고 STATE에 적는다).
 
 ## 확인요청
 - 예외·미배정이 10%를 넘을 때(숫자·원인·대안 2개, 한 번).

@@ -19,7 +19,7 @@ description: FDE 독립 검증(S6). 별도 세션에서 실행·성공 기준·�
 1. **형식 — 쓸 수 있는 상태인가**:
    - 실행: `START_CMD="<실행 명령>" PORT=<포트> bash .agents/skills/fde-verify/scripts/verify.sh /` — localhost 바인딩 경고는 1순위 문제.
    - 키·URL 하드코딩, `.env` 커밋: `git log -p | grep -iE "sk-|OPENAI_API_KEY="`
-   - README의 필수 제출 파일이 실제 경로에 있는가
+   - README의 필수 제출 파일이 실제 경로에 있는가(원본 파일에 쓰는 제출물은 STATE "제출 복사본"의 `submission/` 경로). 과제 원본 파일이 그대로인가(`check-stage.sh S6`)
    - **앱이 뜨지 않으면 여기서 멈춘다** — 의미·목적 판정을 하지 않고 "실행 불가"를 1순위 문제로 보고한다.
 2. **의미 — 합의한 대로 동작하는가**: 성공 기준을 하나씩 **"확인 방법" 열대로** 대조해 VERIFY "성공 기준별 충족" 표에 적는다.
    확인 방법이 비어 있으면 네 해석으로 확인하고 "확인 방법 없음"을 문제 목록에 올린다. 함께 본다:

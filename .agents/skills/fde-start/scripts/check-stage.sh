@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # 단계 진입 점검: 앞 단계 산출물의 빈 칸을 결정론으로 찾는다. 문서 규칙("비어 있으면 멈춘다")을 코드로 한 번 더 건다.
-# 사용(작업 폴더 루트): bash .agents/skills/fde-start/scripts/check-stage.sh S3|S4|S6
+# 사용(작업 폴더 루트): bash .agents/skills/fde-start/scripts/check-stage.sh S3|S4|S6|S7
+#   공통: docs/TASK-ORIGINALS.sha256(S0 init-docs.sh가 기록)의 과제 원본 파일이 바뀌거나 없어졌으면 막는다(KR-122)
 #   S3: 한 줄 명세, STATE 목표 한 줄, 성공 기준 1개 이상
 #       (경고만, 종료 코드에 영향 없음) INTERVIEW 요구 체크리스트 빈 칸 — S2가 [기본]을 가정으로 채웠어야 한다
 #       (경고만) 성공 기준이 5개를 넘으면 — KR-046, 늘릴 땐 다음 사이클·교체 중 하나를 사람에게 물었어야 한다
@@ -9,11 +10,12 @@
 #       LOGIC 결정 한 문장(또는 "결정 없음 — 이유"), 조건 1개 이상, "반드시" 조건마다 담당 단계(KR-060·061·068),
 #       (경고만) LOGIC 단계 행의 확인 케이스 빈 칸(KR-074)
 #   S6: S4 + git log에 [S4] 커밋이 있어야 함(KR-049 — 구현 전에 검증을 시작하지 않는다)
+#   S7: S6과 같다. 제출 정리 전에 원본이 그대로인지 다시 본다
 # 종료 코드: 0 통과 / 1 빈 칸 있음(출력된 칸을 사람에게 보여 주고 멈춘다) / 2 사용법 오류
 set -u
 
 STAGE="${1:-}"
-case "$STAGE" in S3|S4|S6) ;; *) echo "사용: check-stage.sh S3|S4|S6" >&2; exit 2 ;; esac
+case "$STAGE" in S3|S4|S6|S7) ;; *) echo "사용: check-stage.sh S3|S4|S6|S7" >&2; exit 2 ;; esac
 
 A=docs/AGREEMENT.md
 S=docs/STATE.md
@@ -134,13 +136,23 @@ EOF
   fi
 fi
 
-# 7) S6: 구현 커밋([S4]) 없이 검증을 시작하려는가 — KR-049
-if [ "$STAGE" = S6 ]; then
+# 7) S6·S7: 구현 커밋([S4]) 없이 검증을 시작하려는가 — KR-049
+if [ "$STAGE" = S6 ] || [ "$STAGE" = S7 ]; then
   if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
     git log --oneline 2>/dev/null | grep -qE '\[S4\]' || miss "git log에 [S4] 커밋이 없음 — 구현 전에 검증을 시작하지 않는다"
   else
     echo "경고(멈추지 않음): git 이력을 확인할 수 없어 [S4] 커밋 존재 여부를 못 봤다"
   fi
+fi
+
+# 8) 과제 원본 파일 — KR-122. 고쳤으면 되돌리고(git checkout -- <파일>) 내용은 submission/<같은 경로>에 쓴다
+ORIG=docs/TASK-ORIGINALS.sha256
+if [ -f "$ORIG" ]; then
+  if command -v sha256sum >/dev/null 2>&1; then H="sha256sum"; else H="shasum -a 256"; fi
+  changed="$($H -c "$ORIG" 2>/dev/null | grep -v ': OK$' | sed 's/: .*$//' | tr '\n' ' ')"
+  [ -n "$changed" ] && miss "과제 원본 파일이 바뀜: ${changed}— git checkout -- <파일>로 되돌리고, 제출할 내용은 submission/<같은 경로> 복사본에 쓴다"
+else
+  echo "경고(멈추지 않음): $ORIG 없음 — 과제 원본 보존을 확인할 수 없다(S0 init-docs.sh가 만든다)"
 fi
 
 if [ "$FAIL" -eq 0 ]; then
