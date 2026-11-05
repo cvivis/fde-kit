@@ -48,7 +48,9 @@ Claude Code에서는 이 파일이 `CLAUDE.md`이고, 스킬 호출은 `$fde-…
    범위·성공 기준은 AGREEMENT, 선택은 DECISIONS, 실행 증거는 VERIFY가 원본이다. 다른 문서에는 ID·절 참조만 남긴다. 원문 인용·스키마를 임의로 줄이지 않는다.
    **요구 문서 두 개**: 지문이 제시한 요구는 `docs/REQ-TASK.md`(T-ID, 지문 원문 — 바꿀 수 없다), 인터뷰·조사 결정에서 얻은 요구는
    `docs/REQ-USER.md`(U-ID, 출처 INTERVIEW #n·C-ID — 다시 합의해야 바꾼다). AGREEMENT 만들 것·성공 기준은 이 ID를 근거로 단다.
-   맨 위 개수 줄은 손으로 세지 않고 `bash .agents/skills/fde-start/scripts/check-req.sh count`로 고친다.
+   맨 위 개수 줄과 STATE "요구" 줄은 손으로 세지 않고 `bash .agents/skills/fde-start/scripts/check-req.sh count`로 고친다.
+   **요구 추적**: S3 끝에 범위 안 요구마다 설계 연결(작업 항목·LOGIC 조건·결정 ID)을 `check-req.sh links`로, S4 끝·S6에 구현 확인(충족/부분/미충족 — 근거)을
+   `check-req.sh verify`로 본다. 거꾸로 요구 ID가 가리키지 않는 항목·조건은 "근거 없음(범위 밖)", 요구보다 넓히거나 좁힌 해석은 VERIFY "해석 점검"에 — 고칠지는 사람이 정한다.
 9. 항목 하나를 마치면 **남길 것**(코드·커밋·VERIFY 한 줄·DECISIONS)과 **버릴 것**(실패한 시도·탐색 로그·대화 전문)을 가른다.
    버릴 것은 메인 문서로 옮기지 않는다 — 보조 세션 반환(`$fde-handoff`)뿐 아니라 매 항목에 적용한다.
 10. **어려움·접근 기록**: 막힐 때(같은 실패 2번, 한 항목 15분 초과, 범위·설계 변경, 사람이 네 제안을 바로잡음)마다 `docs/STATE.md`

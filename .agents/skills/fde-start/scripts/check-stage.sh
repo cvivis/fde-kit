@@ -12,8 +12,10 @@
 #       DECISIONS 의도 칸이 빈 줄로 남은 결정 없음(KR-048 — "empty — 이유"는 통과, 완전히 빈 줄만 막는다),
 #       LOGIC 결정 한 문장(또는 "결정 없음 — 이유"), 조건 1개 이상, "반드시" 조건마다 담당 단계(KR-060·061·068),
 #       (경고만) LOGIC 단계 행의 확인 케이스 빈 칸(KR-074)
+#       check-req.sh links — 범위 안 요구마다 설계 연결(KR-146). 누락은 막고, 근거 없음·해석 차이(KR-149)는 경고만
 #   S6: S4 + git log에 [S4] 커밋이 있어야 함(KR-049 — 구현 전에 검증을 시작하지 않는다)
-#   S7: S6과 같다. 제출 정리 전에 원본이 그대로인지 다시 본다
+#       (경고만) check-req.sh verify — 구현 확인 미확인 개수·ID(KR-147). S6이 판정해 채우므로 막지 않는다
+#   S7: S3 + [S4] 커밋 + 원본 대조. (경고만) 구현 확인 미확인 — 제출 문서 "알려진 한계"에 옮긴다
 # 종료 코드: 0 통과 / 1 빈 칸 있음(출력된 칸을 사람에게 보여 주고 멈춘다) / 2 사용법 오류
 set -u
 
@@ -197,6 +199,25 @@ EOF
           if ($3 != "" && $6 == "") printf "%s ", $2
         }')"
       [ -n "$nocase" ] && echo "경고(멈추지 않음): LOGIC 단계 ${nocase}확인 케이스 빈 칸 — 작은 입력 → 기대 출력을 적고 S4에서 테스트 이름을 채운다"
+    fi
+  fi
+fi
+
+# 6-C) 요구 추적 — KR-146·147·149. 지문 요구가 0건이면 1-D가 이미 막았으므로 보지 않는다.
+#      S4·S6: check-req.sh links — 범위 안 요구의 설계 연결 누락·없는 ID는 막는다. 근거 없음·해석 차이는 경고(사람이 정한다).
+#      S6·S7: check-req.sh verify — 구현 확인 미확인은 경고로 개수와 ID를 알린다(S6이 판정해 채우고, S7은 제출 문서 알려진 한계에 옮긴다).
+if [ "$reqrc" -eq 0 ]; then
+  if [ "$STAGE" = S4 ] || [ "$STAGE" = S6 ]; then
+    lout="$(bash "$(dirname "$0")/check-req.sh" links 2>&1)"; lrc=$?
+    printf '%s\n' "$lout"
+    [ "$lrc" -ne 0 ] && miss "요구 설계 연결 — 위 누락 요구마다 REQ 설계 연결 칸에 작업 항목 T<n>·LOGIC 조건 C<n>·단계 P<n>·결정 D<n>를 적는다(S3 fde-design)"
+  fi
+  if [ "$STAGE" = S6 ] || [ "$STAGE" = S7 ]; then
+    vout="$(bash "$(dirname "$0")/check-req.sh" verify 2>&1)"; vrc=$?
+    printf '%s\n' "$vout" | grep -v '^근거 없음\|^  - [TC][0-9]* · '
+    if [ "$vrc" -ne 0 ]; then
+      n_un="$(printf '%s\n' "$vout" | sed -n 's/.*미확인: \(.*\)$/\1/p' | head -1 | tr ',' '\n' | grep -c .)"
+      echo "경고(멈추지 않음): 요구 미확인 ${n_un}건 — 숨기지 않는다. S6은 REQ 구현 확인 칸에 충족/부분/미충족 — 근거로 판정하고, 판정 못 한 것은 문제 목록에, S7은 제출 문서 '알려진 한계'에 적는다"
     fi
   fi
 fi
