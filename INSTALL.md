@@ -28,10 +28,10 @@ clone은 `작업폴더/fde-kit/`에 파일을 내려받는다. 작업 폴더에�
 | 원본 | 배치 위치 | 내용 |
 |---|---|---|
 | `fde-kit/AGENTS.md` | `AGENTS.md` (과제가 이미 `AGENTS.md`를 줬으면 `AGENTS.override.md`) | 단계·작업 원칙·보고 형식 |
-| `fde-kit/.agents/skills/` | `.agents/skills/` | 스킬 9종과 그 안의 스크립트·참고 문서·문서 양식 전체 |
+| `fde-kit/.agents/skills/` | `.agents/skills/` | 스킬 11종과 그 안의 스크립트·참고 문서·문서 양식 전체 |
 
 `README.md`·`INSTALL.md`·`BOOTSTRAP.md`·`LICENSE`는 `fde-kit/`에 보관한다.
-과제의 README는 덮어쓰지 않는다. 문서 양식 8종을 `docs/`에 만드는 작업은 이후 S0에서 수행한다.
+과제의 README는 덮어쓰지 않는다. 문서 양식 11종을 `docs/`에 만드는 작업은 이후 S0에서 수행한다.
 
 ## Codex가 수행할 절차
 
@@ -42,7 +42,7 @@ clone은 `작업폴더/fde-kit/`에 파일을 내려받는다. 작업 폴더에�
    git -C fde-kit rev-parse HEAD
    ```
 
-2. **스킬을 복사한다.** `.agents/skills/`를 만들고 원본의 `fde-*` 폴더 9개를 통째로 복사한다.
+2. **스킬을 복사한다.** `.agents/skills/`를 만들고 원본의 `fde-*` 폴더 11개를 통째로 복사한다.
    다른 스킬은 보존한다. 같은 경로에 동일한 파일이 있으면 건너뛰고, 내용이 다르면 덮어쓰지 말고
    충돌 경로를 보고한다. 충돌이 남아 있으면 설치 완료로 보고하지 않는다.
 
@@ -60,7 +60,7 @@ clone은 `작업폴더/fde-kit/`에 파일을 내려받는다. 작업 폴더에�
    `.git/info/exclude`(커밋되지 않는 로컬 제외 목록)에 넣는다. 키트의 `.git`은 보관해 SHA를 계속 확인할 수 있게 한다.
    이미 원본 폴더를 추적 중이면 이를 보고하고 임의로 인덱스를 수정하지 않는다.
 
-5. **파일 배치를 확인한다.** 원본과 대상 파일을 비교해 스킬 9종의 `SKILL.md`와 모든 하위 파일이
+5. **파일 배치를 확인한다.** 원본과 대상 파일을 비교해 스킬 11종의 `SKILL.md`와 모든 하위 파일이
    일치하는지, 기존 과제 파일(`AGENTS.md`·`.gitignore` 포함)이 한 글자도 바뀌지 않았는지 확인한다. `ls .agents/skills`는 파일 배치 확인일 뿐,
    Codex의 스킬 인식을 증명하지 않는다.
 
@@ -85,7 +85,7 @@ Codex에서 `/skills` 또는 `$` 목록으로 `$fde-start`를 확인한다.
 
 ```text
 AGENTS.md를 읽고 .agents/skills/ 아래 SKILL.md 목록을 보여줘.
-앞으로 내가 "S0 해" 또는 "S1 해"라고 하면 해당 단계 SKILL.md 하나를 읽고,
+앞으로 내가 "S0 해" 또는 "S1 인터뷰 해"·"S1 조사 해"라고 하면 해당 단계 SKILL.md 하나를 읽고,
 그 지침이 요구하는 참고 파일·스크립트만 사용해. 다른 단계 SKILL.md는 읽지 마.
 지금은 목록만 보여줘.
 ```
@@ -100,7 +100,7 @@ S0 이후 `docs/DECISIONS.md`에 실제 선택한 대체 경로와 이유를 기
 
 | 위 절차 | Claude Code에서 |
 |---|---|
-| 2. 스킬 복사 | `.agents/skills/`에 복사하는 것은 **그대로** 한다(스크립트·참고 경로의 원본). 추가로 `fde-*` 9개를 `.claude/skills/`에도 복사한다 |
+| 2. 스킬 복사 | `.agents/skills/`에 복사하는 것은 **그대로** 한다(스크립트·참고 경로의 원본). 추가로 `fde-*` 11개를 `.claude/skills/`에도 복사한다 |
 | 3. 작업 규칙 | `AGENTS.md` 대신 `CLAUDE.md`에 반영한다(없으면 원본을 `CLAUDE.md`로 복사). 과제가 `CLAUDE.md`를 줬으면 고치지 않고 키트 규칙을 `CLAUDE.local.md`에 둔다(Claude Code는 둘 다 읽는다). `AGENTS.md`는 만들지 않는다 |
 | 설치 후 확인 | `/` 목록에서 `/fde-start`를 확인한다. 없으면 `claude`를 재시작 |
 | 호출 | `$fde-…` → `/fde-…`. 새 세션은 `/clear` |

@@ -30,7 +30,7 @@ if [ ! -f "$ORIG" ]; then
   mv "$ORIG.tmp" "$ORIG"
   echo "과제 원본 $(wc -l < "$ORIG" | tr -d ' ')개 기록: $ORIG — 이 파일들은 고치지 않는다. 제출할 내용은 submission/<같은 경로> 복사본에 쓴다."
 fi
-for f in STATE INTERVIEW AGREEMENT DECISIONS LOGIC VERIFY HANDOFF DEFENSE; do
+for f in STATE INTERVIEW AGREEMENT DECISIONS LOGIC VERIFY HANDOFF DEFENSE RESEARCH REQ-TASK REQ-USER; do
   [ -f "docs/$f.md" ] || cp "$TPL/$f.md" "docs/$f.md"
 done
 [ -d .git ] || git init -q

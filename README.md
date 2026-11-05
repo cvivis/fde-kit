@@ -8,9 +8,10 @@
 ```
 AGENTS.md                      에이전트 작업 규칙 (단계·사람 몫·원칙·금지·확인요청·출력 형식)
 .agents/skills/
-  fde-start/                   S0 착수: docs 양식 생성, 환경·필수 제출물 확인 (+단계 진입 점검 check-stage.sh)
-  fde-interview/               S1 발굴: 인터뷰 정리, 다음 질문 제안 (+질문 뱅크)
-  fde-agreement/               S2 합의: 한 줄 명세, 범위, 성공 기준, 확인 메시지
+  fde-start/                   S0 착수: docs 양식 생성, 과제 유형(혼합형/리서치형)·환경·필수 제출물·지문 요구 확인 (+단계 진입 점검 check-stage.sh, 요구 개수 check-req.sh)
+  fde-interview/               S1 인터뷰(혼합형): 인터뷰 정리, 다음 질문 제안 (+질문 뱅크)
+  fde-research/                S1 조사(혼합형은 인터뷰 뒤, 리서치형은 S1 전체): 사실·출발선·방안 비교, 판단 질문 라운드, 최소 정보 점검
+  fde-agreement/               S2 합의: 결정 기록, 한 줄 명세, 범위, 성공 기준, 확인 메시지
   fde-blindspot/               사각지대 점검: S2·S7에서 호출, 놓친 시각·잘린 가능성 6개 중 사용자 채택만 반영
   fde-design/                  S3 설계: 고정 코드/LLM 분리, 결정 기록, 작업 목록
   fde-build/                   S4·S5 구현: 항목 하나씩 (+OpenAI·녹음 패턴)
