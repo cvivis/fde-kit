@@ -12,11 +12,14 @@
 #       DECISIONS 의도 칸이 빈 줄로 남은 결정 없음(KR-048 — "empty — 이유"는 통과, 완전히 빈 줄만 막는다),
 #       LOGIC 결정 한 문장(또는 "결정 없음 — 이유"), 조건 1개 이상, "반드시" 조건마다 담당 단계(KR-060·061·068),
 #       (경고만) LOGIC 단계 행의 확인 케이스 빈 칸(KR-074)
-#       check-req.sh links — 범위 안 요구마다 설계 연결(KR-146). 누락은 막고, 근거 없음·해석 차이(KR-149)는 경고만
+#       check-req.sh links — 범위 안 요구마다 설계 연결(KR-146)·반드시 요구 숫자 대조(KR-154). 누락·반드시 숫자 불일치는 막고, 근거 없음·해석 차이(KR-149)는 경고만
+#       check-work.sh design — 반드시 조건의 출처 없는 숫자는 막고(KR-157), 점수 숫자 한도·위반 테스트 계획·단계 표·DECISIONS·작업 목록은 경고(KR-119·120·158·159)
 #   S6: S4 + git log에 [S4] 커밋이 있어야 함(KR-049 — 구현 전에 검증을 시작하지 않는다)
 #       (경고만) check-req.sh verify — 구현 확인 미확인 개수·ID(KR-147). S6이 판정해 채우므로 막지 않는다
 #   S7: S3 + [S4] 커밋 + 원본 대조. (경고만) 구현 확인 미확인 — 제출 문서 "알려진 한계"에 옮긴다
-# 종료 코드: 0 통과 / 1 빈 칸 있음(출력된 칸을 사람에게 보여 주고 멈춘다) / 2 사용법 오류
+#       (경고만) check-work.sh verify — VERIFY 성공 기준별 충족 행 수·판정·근거, 목적 적합 5행(KR-163)
+# 판정 스크립트 check-req.sh·check-work.sh는 node(.mjs)를 부른다(KR-164). node가 없으면 그 판정은 "실행 불가"이고 통과가 아니다(KR-107).
+# 종료 코드: 0 통과 / 1 빈 칸 있음(출력된 칸을 사람에게 보여 주고 멈춘다) / 2 사용법 오류 / 3 실행 불가(node 없음 — 빈 칸은 없었지만 판정 일부를 못 돌림)
 set -u
 
 STAGE="${1:-}"
@@ -29,6 +32,7 @@ for f in "$A" "$S"; do
 done
 
 FAIL=0
+NOEXEC=0
 miss() { echo "빈 칸: $1"; FAIL=1; }
 
 # "## 제목"으로 시작하는 절의 본문(다음 "## "까지). HTML 주석 줄은 뺀다.
@@ -102,7 +106,9 @@ fi
 # 1-D) 요구 문서 — KR-145. check-req.sh count가 통과(지문 요구 1건 이상)하고, 얻은 요구가 1건 이상이어야 한다.
 reqout="$(bash "$(dirname "$0")/check-req.sh" count 2>&1)"; reqrc=$?
 printf '%s\n' "$reqout"
-if [ "$reqrc" -ne 0 ]; then
+if [ "$reqrc" -eq 3 ]; then
+  NOEXEC=1
+elif [ "$reqrc" -ne 0 ]; then
   miss "요구 문서 — check-req.sh count 실패(위 출력)"
 else
   u_n="$(printf '%s\n' "$reqout" | sed -n 's/.*얻은 요구 \([0-9][0-9]*\)(.*/\1/p' | head -1)"
@@ -210,7 +216,7 @@ if [ "$reqrc" -eq 0 ]; then
   if [ "$STAGE" = S4 ] || [ "$STAGE" = S6 ]; then
     lout="$(bash "$(dirname "$0")/check-req.sh" links 2>&1)"; lrc=$?
     printf '%s\n' "$lout"
-    [ "$lrc" -ne 0 ] && miss "요구 설계 연결 — 위 누락 요구마다 REQ 설계 연결 칸에 작업 항목 T<n>·LOGIC 조건 C<n>·단계 P<n>·결정 D<n>를 적는다(S3 fde-design)"
+    [ "$lrc" -ne 0 ] && miss "요구 설계 연결·숫자 — 위 누락 요구는 REQ 설계 연결 칸에 작업 항목 T<n>·LOGIC 조건 C<n>·단계 P<n>·결정 D<n>를, 반드시 숫자 불일치는 LOGIC 규칙에 요구 숫자를 그대로 적는다(S3 fde-design)"
   fi
   if [ "$STAGE" = S6 ] || [ "$STAGE" = S7 ]; then
     vout="$(bash "$(dirname "$0")/check-req.sh" verify 2>&1)"; vrc=$?
@@ -219,6 +225,22 @@ if [ "$reqrc" -eq 0 ]; then
       n_un="$(printf '%s\n' "$vout" | sed -n 's/.*미확인: \(.*\)$/\1/p' | head -1 | tr ',' '\n' | grep -c .)"
       echo "경고(멈추지 않음): 요구 미확인 ${n_un}건 — 숨기지 않는다. S6은 REQ 구현 확인 칸에 충족/부분/미충족 — 근거로 판정하고, 판정 못 한 것은 문제 목록에, S7은 제출 문서 '알려진 한계'에 적는다"
     fi
+  fi
+fi
+
+# 6-D) 설계 산출물의 셀 수 있는 점검 — KR-156·157. S4 진입(=S3 끝 자가 검증)에서만. 실패 줄(반드시 조건 숫자 출처 없음)만 막는다
+if [ "$STAGE" = S4 ]; then
+  wout="$(bash "$(dirname "$0")/check-work.sh" design 2>&1)"; wrc=$?
+  printf '%s\n' "$wout" | grep -v '^통과: check-work\|^실패: check-work'
+  [ "$wrc" -eq 3 ] && NOEXEC=1
+  [ "$wrc" -ne 0 ] && [ "$wrc" -ne 3 ] && miss "설계 점검 — 위 check-work.sh design의 '실패:' 줄(S3 fde-design에서 고친다)"
+fi
+# 6-E) S6 검증 기록 — KR-163. S7 진입에서 경고만(148분 이후 제출 정리를 막지 않는다)
+if [ "$STAGE" = S7 ]; then
+  wout="$(bash "$(dirname "$0")/check-work.sh" verify 2>&1)"; wrc=$?
+  [ "$wrc" -eq 3 ] && NOEXEC=1
+  if [ "$wrc" -ne 0 ] && [ "$wrc" -ne 3 ]; then
+    printf '%s\n' "$wout" | grep -v '^실패: check-work' | sed 's/^실패: /경고(멈추지 않음): S6 기록 — /'
   fi
 fi
 
@@ -241,6 +263,10 @@ else
   echo "경고(멈추지 않음): $ORIG 없음 — 과제 원본 보존을 확인할 수 없다(S0 init-docs.sh가 만든다)"
 fi
 
+if [ "$FAIL" -eq 0 ] && [ "$NOEXEC" -eq 1 ]; then
+  echo "실행 불가: $STAGE 진입 판정 중 node 스크립트(check-req·check-work)를 돌리지 못했다 — 통과 아님. node를 설치하거나 같은 점검을 손으로 보고 STATE에 남긴 뒤 사람에게 진행 여부를 묻는다(KR-107)"
+  exit 3
+fi
 if [ "$FAIL" -eq 0 ]; then
   echo "통과: $STAGE 진입 조건"
   exit 0
