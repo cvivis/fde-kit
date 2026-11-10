@@ -30,6 +30,14 @@ if [ ! -f "$ORIG" ]; then
   mv "$ORIG.tmp" "$ORIG"
   echo "과제 원본 $(wc -l < "$ORIG" | tr -d ' ')개 기록: $ORIG — 이 파일들은 고치지 않는다. 제출할 내용은 submission/<같은 경로> 복사본에 쓴다."
 fi
+# 파일이 아닌 입력(붙여 넣은 글·화면·연결 도구, KR-178)은 docs/inputs/에 원문으로 둔다. 다시 실행하면 아직 목록에 없는 입력 원문을 원본 목록에 더한다
+mkdir -p docs/inputs
+if command -v sha256sum >/dev/null 2>&1; then H="sha256sum"; else H="shasum -a 256"; fi
+added=0
+for f in $(find ./docs/inputs -type f | LC_ALL=C sort); do
+  grep -qF "  $f" "$ORIG" || { $H "$f" >> "$ORIG"; added=$((added + 1)); }
+done
+[ "$added" -gt 0 ] && echo "입력 원문 ${added}개를 원본 목록에 더함: docs/inputs/ — 고치지 않는다"
 for f in STATE INTERVIEW AGREEMENT DECISIONS LOGIC VERIFY HANDOFF DEFENSE RESEARCH REQ-TASK REQ-USER; do
   [ -f "docs/$f.md" ] || cp "$TPL/$f.md" "docs/$f.md"
 done

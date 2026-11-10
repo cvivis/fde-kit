@@ -8,9 +8,9 @@
 ```
 AGENTS.md                      에이전트 작업 규칙 (단계·사람 몫·원칙·금지·확인요청·출력 형식)
 .agents/skills/
-  fde-start/                   S0 착수: docs 양식 생성, 과제 유형(혼합형/리서치형)·환경·필수 제출물·지문 요구 확인 (+단계 진입 점검 check-stage.sh, 요구 개수·추적 check-req.sh count|links|verify, 설계·구현·검증 점검 check-work.sh design|build|verify — 판정은 .mjs(node, 의존성 없음))
-  fde-interview/               S1 인터뷰(혼합형): 인터뷰 정리, 다음 질문 제안 (+질문 뱅크)
-  fde-research/                S1 조사(혼합형은 인터뷰 뒤, 리서치형은 S1 전체): 사실·출발선·방안 비교, 판단 질문 라운드, 최소 정보 점검
+  fde-start/                   S0 착수: docs 양식 생성, 입력 목록(붙여 넣은 글은 docs/inputs/에 원문)·환경·필수 제출물·지문 요구 확인 (+단계 진입 점검 check-stage.sh, 요구 개수·추적 check-req.sh count|links|verify, 설계·구현·검증 점검 check-work.sh design|build|verify — 판정은 .mjs(node, 의존성 없음))
+  fde-interview/               S1 인터뷰(대화 입력이 있을 때): 인터뷰 정리, 다음 질문 제안 (+질문 뱅크)
+  fde-research/                S1 조사(모든 문제): 모든 입력에서 요구·사실 도출, 조사 제시 → 사람 검수·판단 라운드, 최소 정보 점검
   fde-agreement/               S2 합의: 결정 기록, 한 줄 명세, 범위, 성공 기준, 확인 메시지
   fde-blindspot/               사각지대 점검: S2·S7에서 호출, 놓친 시각·잘린 가능성 6개 중 사용자 채택만 반영
   fde-design/                  S3 설계: 고정 코드/LLM 분리, 결정 기록, 작업 목록
@@ -42,7 +42,7 @@ Codex가 스킬과 작업 규칙을 작업 폴더에 배치합니다. 별도 설
 설치 후 `$fde-start` 인식을 확인하고 S0을 시작하세요. 상세 절차와 실패 시 분기는 [INSTALL.md](INSTALL.md).
 
 ## 대상 에이전트
-기본은 **Codex**(`AGENTS.md` + `.agents/skills/`)입니다. 2026 COFATHON 현장은 **제공된 Codex만 허용**합니다(Claude Code 등 다른 AI 연결 불가) — 아래 Claude Code 경로는 로컬 연습용입니다.
+Codex(`AGENTS.md` + `.agents/skills/`)와 Claude Code(`CLAUDE.md` + `.claude/skills/`) 둘 다 정식 설치 경로입니다. 대회 규정이 허용하는 도구를 고르세요.
 Claude Code에서 쓸 때는 `AGENTS.md`를 `CLAUDE.md`로 복사하고, `.agents/skills/`는 **그대로 둔 채**
 스킬 인식용으로 `.claude/skills/`에도 복사하세요(스크립트 경로가 `.agents/skills/` 기준이라 옮기면 깨집니다).
 호출은 `$fde-start` 대신 `/fde-start`. 규칙 파일은 작업 폴더에 **하나만** 두세요. 절차는 [INSTALL.md](INSTALL.md) "Claude Code".
@@ -68,4 +68,4 @@ S0~S5는 같은 메인 세션을 쓴다. 범위 승인 뒤 설계 선택·의도
 ```
 
 문서는 필요한 절만 읽고 변경분만 기록한다. 단계 전환·첫 실제 E2E 시각과 확인 가능한 토큰은 STATE에 남긴다.
-100분에는 맥락을 점검하되 세션 교체는 필요할 때만 한다. 시간표는 마감 기준이며, 일찍 끝났으면 다음 승인 작업으로 이어 간다.
+세션 교체는 결정 재질문·설명 반복·사람 요청 때만 한다. 시간표는 두지 않는다 — 마감·제출 형식은 대회 규정을 따른다.

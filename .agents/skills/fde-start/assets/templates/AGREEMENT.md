@@ -2,7 +2,7 @@
 
 ## 한 줄 명세
 [누가] [언제] [무엇을] 할 수 있게 해서 [어떤 문제]를 줄인다.
-- 근거: <!-- 혼합형: INTERVIEW #n(목표 인용). 리서치형: RESEARCH 결정 C-ID + 지문 T-ID. check-stage.sh S3가 리서치형은 C-ID를 확인한다 -->
+- 근거: <!-- INTERVIEW #n(목표 인용) 또는 RESEARCH 결정 C-ID, 그리고 지문 T-ID. check-stage.sh S3가 #n·C-ID 중 하나를 확인한다 -->
 
 ## 제가 이해한 문제
 (현업 언어 2~3줄)

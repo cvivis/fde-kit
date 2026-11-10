@@ -104,7 +104,7 @@ if (MODE === 'count') {
   if (u.bad) log(`경고(멈추지 않음): REQ-USER 우선 칸이 P0/P1/P2가 아님:${u.bad}`);
   if (t.und > 0) log(`경고(멈추지 않음): REQ-TASK 범위가 비었거나 미정 ${t.und}건 — 이번 또는 '제외 — 이유'로 적는다`);
   if (u.und > 0) log(`경고(멈추지 않음): REQ-USER 범위 미정 ${u.und}건 — S2 합의에서 이번/제외로 확정한다`);
-  if (u.total === 0) log('경고(멈추지 않음): 얻은 요구 0건 — S1 인터뷰·조사 결정에서 REQ-USER에 올린다(S3 진입 검사는 0건을 막는다)');
+  if (u.total === 0) log('경고(멈추지 않음): 얻은 요구 0건 — S1 인터뷰·지문 밖 입력·조사 결정에서 REQ-USER에 올린다(S3 진입 검사는 0건을 막는다 — 정말 없으면 "- 해당 없음 — 이유")');
 }
 if (t.total === 0) { console.error('실패: 지문 요구 0건 — 검증 0건은 실패. S0이 과제 지문의 요구를 REQ-TASK에 원문으로 옮긴다'); process.exit(1); }
 if (MODE === 'count') process.exit(0);

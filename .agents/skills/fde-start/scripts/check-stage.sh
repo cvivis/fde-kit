@@ -3,7 +3,8 @@
 # 사용(작업 폴더 루트): bash .agents/skills/fde-start/scripts/check-stage.sh S3|S4|S6|S7
 #   공통: docs/TASK-ORIGINALS.sha256(S0 init-docs.sh가 기록)의 과제 원본 파일이 바뀌거나 없어졌으면 막는다(KR-122)
 #   S3: 한 줄 명세, STATE 목표 한 줄, 성공 기준 1개 이상
-#       리서치형(STATE "- 과제 유형: 리서치형")은 한 줄 명세 "- 근거:"에 RESEARCH "## 결정" C-ID(원문 있는 행) — KR-136
+#       한 줄 명세 "- 근거:"에 INTERVIEW 인용 #n 또는 RESEARCH "## 결정" C-ID(원문 있는 행) — KR-136·KR-166(입력 종류와 상관없이 같다)
+#       (경고만) STATE "## 입력 목록" 0행 — KR-166
 #       RESEARCH "## 최소 정보 점검" 8칸 빈칸 없음·근거 있음·"- 판정: 충족" — KR-144
 #       check-req.sh count 통과(지문 요구 1건 이상) + REQ-USER 얻은 요구 1건 이상 — KR-145
 #       (경고만, 종료 코드에 영향 없음) INTERVIEW 요구 체크리스트 빈 칸 — S2가 [기본]을 가정으로 채웠어야 한다
@@ -51,10 +52,9 @@ if [ -z "$spec" ] || printf '%s' "$spec" | grep -q '\[누가\]'; then
   miss "AGREEMENT 한 줄 명세 — 목적을 문장으로 못 쓰면 설계를 시작하지 않는다"
 fi
 
-# 1-B) 한 줄 명세 근거 — KR-136. 리서치형(STATE "- 과제 유형: 리서치형")은 INTERVIEW 인용 대신 RESEARCH "## 결정"의
-#      C-ID(원문이 있는 행)를 근거로 받는다. 혼합형은 INTERVIEW 인용(#n) 또는 C-ID가 없으면 경고만 한다.
+# 1-B) 한 줄 명세 근거 — KR-136·KR-166. 입력 종류와 상관없이 INTERVIEW 인용(#n) 또는 RESEARCH "## 결정"의
+#      C-ID(원문이 있는 행)가 하나 이상 있어야 한다.
 R=docs/RESEARCH.md
-kind="$(grep -m1 '^- 과제 유형:' "$S" | sed 's/^- 과제 유형://' | trim)"
 basis="$(section "$A" "한 줄 명세" | trim | grep -v '^$')"
 cids_ok=""
 if [ -f "$R" ]; then
@@ -64,13 +64,12 @@ if [ -f "$R" ]; then
       END { exit !f }' && cids_ok="$cids_ok $c"
   done
 fi
-case "$kind" in
-  리서치형*)
-    [ -n "$cids_ok" ] || miss "AGREEMENT 한 줄 명세 근거 — 리서치형은 RESEARCH '## 결정'의 C-ID(원문이 있는 행)를 '- 근거:' 줄에 적는다" ;;
-  혼합형*)
-    [ -n "$cids_ok" ] || printf '%s' "$basis" | grep -qE '#[0-9]+' || echo "경고(멈추지 않음): AGREEMENT 한 줄 명세 근거(INTERVIEW #n 또는 C-ID)가 없다" ;;
-  *) echo "경고(멈추지 않음): STATE 기준판 '과제 유형'이 비어 있다 — S0이 혼합형/리서치형을 지문 근거로 적는다" ;;
-esac
+if [ -z "$cids_ok" ] && ! printf '%s' "$basis" | grep -qE '#[0-9]+'; then
+  miss "AGREEMENT 한 줄 명세 근거 — '- 근거:' 줄에 INTERVIEW 인용 #n 또는 RESEARCH '## 결정'의 C-ID(원문이 있는 행)를 적는다"
+fi
+# 1-B2) 입력 목록 — KR-166. 경고만(입력을 다 모았는지는 사람이 본다)
+in_rows="$(section "$S" "입력 목록" | awk -F'|' '/^\|/ && $0 !~ /^\|[-[:space:]|]+$/ { t=$3; gsub(/^[[:space:]]+|[[:space:]]+$/, "", t); if (t != "" && t != "종류") n++ } END { print n+0 }')"
+[ "$in_rows" -gt 0 ] || echo "경고(멈추지 않음): STATE '입력 목록'이 비어 있다 — S0이 받은 입력(지문·대화·기획서·데이터·이미지·붙여 넣은 글)을 종류·경로와 함께 적는다"
 
 # 1-C) 최소 정보 점검 — KR-144. RESEARCH "## 최소 정보 점검" 8칸이 모두 있고 빈칸이 없으며 판정이 충족이어야 한다.
 #      표 열: | 칸 | 상태 | 근거 |. 상태는 채움/가정(근거 필수)/빈칸.
@@ -90,7 +89,7 @@ else
     if [ -z "$row" ]; then miss "RESEARCH 최소 정보 점검 '$label' 칸 없음 — 칸 8개를 지우지 않는다"; continue; fi
     st="$(printf '%s' "$row" | cut -f2)"; ev="$(printf '%s' "$row" | cut -f3)"
     case "$st" in
-      채움|가정) [ -n "$ev" ] || miss "RESEARCH 최소 정보 점검 '$label' 근거 — $st이면 인용 #n·C-ID·F-ID·사람 말을 적는다" ;;
+      채움|가정|"해당 없음") [ -n "$ev" ] || miss "RESEARCH 최소 정보 점검 '$label' 근거 — $st이면 인용 #n·C-ID·F-ID·사람 말(해당 없음은 이유)을 적는다" ;;
       *) blanks="$blanks$label, " ;;
     esac
   done
@@ -112,7 +111,11 @@ elif [ "$reqrc" -ne 0 ]; then
   miss "요구 문서 — check-req.sh count 실패(위 출력)"
 else
   u_n="$(printf '%s\n' "$reqout" | sed -n 's/.*얻은 요구 \([0-9][0-9]*\)(.*/\1/p' | head -1)"
-  [ "${u_n:-0}" -gt 0 ] || miss "REQ-USER 얻은 요구 0건 — 인터뷰 인용·조사 결정(C-ID)에서 얻은 요구를 U-ID로 올린다"
+  if [ "${u_n:-0}" -eq 0 ]; then
+    grep -qE '^- 해당 없음 — .+' docs/REQ-USER.md 2>/dev/null \
+      && echo "참고: REQ-USER 얻은 요구 0건 — '해당 없음' 이유가 적혀 있다(KR-176)" \
+      || miss "REQ-USER 얻은 요구 0건 — 지문 밖 입력(대화·기획서·파일)·조사 결정(C-ID)에서 얻은 요구를 U-ID로 올리거나, 정말 없으면 '- 해당 없음 — 이유' 한 줄"
+  fi
 fi
 
 # 2) STATE 목표 한 줄
@@ -235,7 +238,7 @@ if [ "$STAGE" = S4 ]; then
   [ "$wrc" -eq 3 ] && NOEXEC=1
   [ "$wrc" -ne 0 ] && [ "$wrc" -ne 3 ] && miss "설계 점검 — 위 check-work.sh design의 '실패:' 줄(S3 fde-design에서 고친다)"
 fi
-# 6-E) S6 검증 기록 — KR-163. S7 진입에서 경고만(148분 이후 제출 정리를 막지 않는다)
+# 6-E) S6 검증 기록 — KR-163. S7 진입에서 경고만(제출 정리를 막지 않는다)
 if [ "$STAGE" = S7 ]; then
   wout="$(bash "$(dirname "$0")/check-work.sh" verify 2>&1)"; wrc=$?
   [ "$wrc" -eq 3 ] && NOEXEC=1
